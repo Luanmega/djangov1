@@ -1,3 +1,7 @@
 from django.shortcuts import render
 
-# Create your views here.
+def landing(request):
+    return render(request, 'tiendas/landing.html', {})
+
+def tiendas(request):
+    return render(request, 'tiendas/tiendas.html', {})
