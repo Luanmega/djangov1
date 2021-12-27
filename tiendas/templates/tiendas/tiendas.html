@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="" type="text/css" >
+    <title>ToTheSpace-Agregar tienda</title>
+    <style>
+        body {
+            background-color: #fe8065;
+        }
+
+        .brand {
+            background-color: #434343;
+        }
+
+        .brand-text {
+            color: white;
+        }
+
+        .tiendas-title {
+            background-color: #16bdc4;
+            border-radius: 10px;
+            color: #434343;
+        }
+
+        .formulario {
+            background-color: white;
+        }
+
+    </style>
+</head>
+<body>
+    <content class="">
+        <div class="row">
+            <div class="col-md-12 brand">
+                <h1 class="brand-text ml-5 mt-3">TotheSpace</h1>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-10 offset-md-1 tiendas-title text-center mt-3">
+                <h2 class="brands">Agregar tienda</h2>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-md-6 offset-md-3 formulario">
+                <form class="form-tiendas mt-3 mb-4" id="form-tiendas">{% csrf_token %}
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" placeholder="Nombre de tienda" class="nombre form-control" id="nombre">
+                    </div>
+                    <div class="form-group">
+                        <label for="direccion">Direccion</label>
+                        <input type="text" placeholder="Direccion de tienda" class="direccion form-control" id="direccion">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </form>
+            </div>
+        </div>
+    </content>
+
+    <script>
+        $(document).ready(function () {
+            store();
+        });
+
+        $.ajaxSetup({
+            headers: {
+                "X-CSRFToken": $('[name=csrfmiddlewaretoken]').val()
+            }
+        })
+        
+        function store(){
+            
+
+            $("#form-tiendas").submit(function(e) {
+                var data = new FormData();
+                data.append('X-CSRFToken',  '{{ csrf_token }}');  
+                data.append('nombre', $('#nombre').val());
+                data.append('direccion', $('#direccion').val());
+                //console.log($('input[name=csrfmiddlewaretoken]').val());
+                var that = $("#form-tiendas");
+                
+                if($('#nombre').val() != null && $('#direccion').val() != null) {
+                    $.ajax({
+                        url: "{% url 'add_tienda' %}",
+                        type: 'POST',
+                        data: JSON.stringify({
+                            csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                            nombre: $('#nombre').val(),
+                            direccion: $('#direccion').val(),
+                            action: 'post'
+                        }),
+                        processData: false,cache:false, success: function(data, textStatus, jqXHR){
+                            // $('#id').val(data);
+                            console.log(data);
+                        }
+                        
+                    }).done(function (response) {
+                        console.log(response);
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        console.log("ERROR");
+                    });
+                }
+
+                e.preventDefault();
+            })
+        }
+    </script>
+</body>
+</html>
