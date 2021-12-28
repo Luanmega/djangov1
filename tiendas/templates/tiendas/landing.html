@@ -48,7 +48,7 @@
 
         <div class="row mt-3">
             <div class="col-md-10 offset-md-1 tiendas-title text-center mt-3">
-                <h2 class="brands">Tiendas - <a href="{% url 'tiendas' %}"><b>+</b></a></h2>
+                <h2 class="brands">Tiendas - <a href="{% url 'tiendas' pk=0 %}"><b>+</b></a></h2>
             </div>
         </div>
 
@@ -61,6 +61,14 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ tienda }}</h5>
                                 <p class="card-text">Direccion: {{ tienda.direccion }}</p>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <a href="{% url 'delete_tienda' pk=tienda.pk %}">Borrar</a>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a href="{% url 'tiendas' pk=tienda.pk %}">Editar</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
